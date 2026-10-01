@@ -3,12 +3,14 @@ package com.LearningREST.LearningRESTApis.controller;
 import com.LearningREST.LearningRESTApis.DTO.AddStudentRequestDto;
 import com.LearningREST.LearningRESTApis.DTO.StudentDto;
 import com.LearningREST.LearningRESTApis.service.StudentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +35,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentDto> createNewStudent(@RequestBody  AddStudentRequestDto addStudentRequestDto) {
+    public ResponseEntity<StudentDto> createNewStudent(@RequestBody  @Valid AddStudentRequestDto addStudentRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(studentService.createNewStudent(addStudentRequestDto));
     }
 
@@ -48,6 +50,10 @@ public class StudentController {
         return ResponseEntity.ok(studentService.updateStudent(id, addStudentRequestDto));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<StudentDto> updateStudentPatch(@PathVariable Long id, @RequestBody Map<String,Object> updates) {
+        return ResponseEntity.ok(studentService.updateStudentPatch(id, updates));
+    }
 
 //    private final StudentRepository studentRepository;
 //    public StudentController(StudentService studentService, StudentRepository studentRepository) {

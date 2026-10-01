@@ -4,6 +4,7 @@ import com.LearningREST.LearningRESTApis.DTO.AddStudentRequestDto;
 import com.LearningREST.LearningRESTApis.DTO.StudentDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StudentService {
     void deleteStudentById(Long id);
@@ -17,4 +18,6 @@ public interface StudentService {
     StudentDto createNewStudent(AddStudentRequestDto addStudentRequestDto);
 
     StudentDto updateStudent(Long id, AddStudentRequestDto addStudentRequestDto);
+
+    StudentDto updateStudentPatch(Long id, Map<String, Object> updates);
 }

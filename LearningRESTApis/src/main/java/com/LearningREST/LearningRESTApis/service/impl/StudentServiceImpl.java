@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -82,6 +83,29 @@ public class StudentServiceImpl implements StudentService {
         modelMapper.map(addStudentRequestDto, student1);
         Student updatedStudent = studentRepository.save(student1);
         return modelMapper.map(updatedStudent, StudentDto.class);
+    }
+
+    @Override
+    public StudentDto updateStudentPatch(Long id, Map<String, Object> updates) {
+        Student student = studentRepository.findById(id).
+                orElseThrow(()-> new ResourceNotFoundException("student not found with the id:"+id));
+
+//        modelMapper.map(updates, student);
+//        Student updatedStudent = studentRepository.save(student);
+//        return modelMapper.map(updatedStudent, StudentDto.class);
+
+        updates.forEach((k,v)->{
+           switch (k){
+               case "name": student.setName((String) v) ;
+               break;
+               case "email": student.setEmail((String) v) ;
+               break;
+               default:
+                   throw new RuntimeException("unknown key");
+           }
+        });
+        studentRepository.save(student);
+        return modelMapper.map(student, StudentDto.class);
     }
 
 //    @Override
